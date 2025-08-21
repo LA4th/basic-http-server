@@ -41,7 +41,6 @@ const server = http.createServer((req, res) => {
       try {
         const updated = JSON.parse(body);
         let note = notes.find((n) => n.id === id);
-        notes.push(note);
 
         if(!note) {
           res.writeHead(404);
