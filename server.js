@@ -61,7 +61,7 @@ const server = http.createServer((req, res) => {
   // DELETE DATA
   else if(req.method === "DELETE" && req.url.startsWith("/notes/")) {
     const id = parseInt(req.url.split("/")[2]);
-    const index = notes.find((n) => n.id === id);
+    const index = notes.findIndex((n) => n.id === id);
 
     if(index === -1) {
       res.writeHead(404)
