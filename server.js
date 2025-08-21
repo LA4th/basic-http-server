@@ -40,7 +40,7 @@ const server = http.createServer((req, res) => {
     req.on("end", () => {
       try {
         const updated = JSON.parse(body);
-        let note = notes.find((n) => {n.id === id});
+        let note = notes.find((n) => n.id === id);
         notes.push(note);
 
         if(!note) {
@@ -58,6 +58,25 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify({error: "Invalid JSON format!"}));
       }
     });
+  }
+  // DELETE DATA
+  else if(req.method === "DELETE" && req.url.startsWith("/notes/")) {
+    const id = parseInt(req.url.split("/")[2]);
+    const index = notes.find((n) => n.id === id);
+
+    if(index === -1) {
+      res.writeHead(404)
+      return res.end(JSON.stringify({error: "Note not found!"}));
+    }
+    const deleted = notes.splice(index, 1);
+    
+    res.writeHead(200);
+    res.end(JSON.stringify({message: "Note deleted!", note: deleted[0]}));
+  }
+  // 404
+  else {
+    res.writeHead(404);
+    res.end(JSON.stringify({message: "404 NOT FOUND!"}))
   }
 });
 
